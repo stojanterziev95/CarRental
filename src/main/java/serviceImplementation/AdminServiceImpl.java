@@ -43,4 +43,9 @@ public class AdminServiceImpl implements AdminService {
     public void deleteAdmin(Long id) {
         adminRepository.deleteById(id);
     }
+
+    @Override
+    public Admin getAdminByUsername(String username) {
+        return adminRepository.findByUsername(username);
+    }
 }

@@ -1,11 +1,15 @@
 package controllers;
 
+import DTOs.AdvancedSearchDTO;
+import DTOs.CarAvailabilityDTO;
 import models.Car;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.CarService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,5 +44,16 @@ public class CarController {
     public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/availability")
+    public ResponseEntity<List<CarAvailabilityDTO>> getCarAvailability(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<CarAvailabilityDTO> carAvailabilityList = carService.getCarAvailabilityOnDate(date);
+        return ResponseEntity.ok(carAvailabilityList);
+    }
+
+    @GetMapping("/advanced")
+    public List<AdvancedSearchDTO> advancedSearch(@RequestParam("searchTerm") String searchTerm) {
+        return carService.performAdvancedSearch(searchTerm);
     }
 }

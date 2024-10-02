@@ -1,8 +1,10 @@
 package service;
 
-import DTOs.CarAvailability;
+import DTOs.AdvancedSearchDTO;
+import DTOs.CarAvailabilityDTO;
 import models.Car;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CarService {
@@ -16,5 +18,7 @@ public interface CarService {
 
     void deleteCar(Long id);
 
-    List<CarAvailability> getCarAvailability();
+    List<CarAvailabilityDTO> getCarAvailabilityOnDate(LocalDate date);
+
+    List<AdvancedSearchDTO> performAdvancedSearch(String searchTerm);
 }

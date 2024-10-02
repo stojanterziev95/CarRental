@@ -9,4 +9,5 @@ public interface AdminService {
     Admin createAdmin(Admin admin);
     Admin updateAdmin(Long id, Admin admin);
     void deleteAdmin(Long id);
+    Admin getAdminByUsername(String username);
 }

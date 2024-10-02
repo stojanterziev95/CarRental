@@ -3,6 +3,7 @@ package controllers;
 import models.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import service.AdminService;
 
@@ -12,8 +13,15 @@ import java.util.List;
 @RequestMapping("/admins")
 public class AdminController {
 
+
+    private final AdminService adminService;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private AdminService adminService;
+    public AdminController(AdminService adminService, PasswordEncoder passwordEncoder) {
+        this.adminService = adminService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping
     public List<Admin> getAllAdmins() {
@@ -40,5 +48,32 @@ public class AdminController {
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Admin loginDetails) {
+        Admin admin = adminService.getAdminByUsername(loginDetails.getUsername());
+
+        if (admin != null && passwordEncoder.matches(loginDetails.getPassword(), admin.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody Admin adminDetails) {
+        // Check if the admin with the same username already exists
+        if (adminService.getAdminByUsername(adminDetails.getUsername()) != null) {
+            return ResponseEntity.badRequest().body("Username already exists.");
+        }
+
+        // Encode the password
+        adminDetails.setPassword(passwordEncoder.encode(adminDetails.getPassword()));
+
+        // Save the new admin
+        adminService.createAdmin(adminDetails);
+
+        return ResponseEntity.ok("Admin registered successfully");
     }
 }

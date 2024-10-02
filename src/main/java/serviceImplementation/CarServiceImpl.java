@@ -1,6 +1,7 @@
 package serviceImplementation;
 
-import DTOs.CarAvailability;
+import DTOs.AdvancedSearchDTO;
+import DTOs.CarAvailabilityDTO;
 import models.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,19 +52,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarAvailability> getCarAvailability() {
-        List<Car> cars = carRepository.findAll();
-        List<CarAvailability> availabilityList = new ArrayList<>();
+    public List<CarAvailabilityDTO> getCarAvailabilityOnDate(LocalDate date) {
+        return carRepository.findCarAvailabilityByDate(date);
+    }
 
-        for (Car car : cars) {
-            // Logic to determine availability
-            // For example, assuming all cars are available from today to next month
-            boolean isAvailable = true; // Replace with actual availability logic
-            LocalDate availableFrom = LocalDate.now();
-            LocalDate availableUntil = availableFrom.plusDays(30);
-
-            availabilityList.add(new CarAvailability(car.getId(), isAvailable, availableFrom, availableUntil));
-        }
-        return availabilityList;
+    @Override
+    public List<AdvancedSearchDTO> performAdvancedSearch(String searchTerm) {
+        return carRepository.advancedSearch(searchTerm);
     }
 }
