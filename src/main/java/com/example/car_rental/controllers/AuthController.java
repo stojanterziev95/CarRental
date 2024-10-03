@@ -1,7 +1,10 @@
 package com.example.car_rental.controllers;
 
 import com.example.car_rental.models.AuthenticationRequest;
+import com.example.car_rental.models.AuthenticationResponse;
 import com.example.car_rental.security.JwtUtil;
+import com.example.car_rental.serviceImplementation.UserServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,24 +14,40 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final JwtUtil jwtUtil;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public AuthController(UserServiceImpl userServiceImpl, JwtUtil jwtUtil) {
+        this.userServiceImpl = userServiceImpl;
+        this.jwtUtil = jwtUtil;
+    }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
+        String username = request.getUsername();
+        String password = request.getPassword();
 
-    @PostMapping("/authenticate")
-    public String createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        // Validate user credentials
+        if (userServiceImpl.validateUser(username, password)) {
+            String token = jwtUtil.generateToken(username);
+            return ResponseEntity.ok(new AuthenticationResponse(token));
+        } else {
+            return ResponseEntity.status(401).body(new AuthenticationResponse("Invalid credentials"));
+        }
+    }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        return jwtUtil.generateToken(userDetails.getUsername());
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody AuthenticationRequest request) {
+        boolean isRegistered = userServiceImpl.registerUser(request);
+        if (isRegistered) {
+            return ResponseEntity.ok("User registered successfully");
+        } else {
+            return ResponseEntity.status(400).body("User registration failed");
+        }
     }
 }
-
