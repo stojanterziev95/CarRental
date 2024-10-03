@@ -1,5 +1,7 @@
 package com.example.car_rental.serviceImplementation;
 
+import com.example.car_rental.exceptions.InvalidCredentialsException;
+import com.example.car_rental.exceptions.UserNotFound;
 import com.example.car_rental.models.AuthenticationRequest;
 import com.example.car_rental.models.User;
 import com.example.car_rental.repository.UserRepository;
@@ -21,26 +23,28 @@ public class UserServiceImpl {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Validate user credentials against the database
     public boolean validateUser(String username, String password) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            return passwordEncoder.matches(password, user.getPassword());
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return true;
+            } else {
+                throw new InvalidCredentialsException("Invalid username or password");
+            }
         }
-        return false; // User not found
+        throw new UserNotFound("User not found with username: " + username);
     }
 
-    // Handle user registration
     public boolean registerUser(AuthenticationRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            return false; // Username already exists
+            throw new InvalidCredentialsException("Username already exists");
         }
 
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); // Hash the password
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
-        return true; // User registered successfully
+        return true;
     }
 }
