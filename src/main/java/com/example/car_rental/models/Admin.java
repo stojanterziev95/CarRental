@@ -3,6 +3,7 @@ package com.example.car_rental.models;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 
+
 @Entity
 public class Admin {
     @Id

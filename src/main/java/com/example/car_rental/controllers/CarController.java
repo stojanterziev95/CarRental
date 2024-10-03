@@ -56,4 +56,16 @@ public class CarController {
     public List<AdvancedSearchDTO> advancedSearch(@RequestParam("searchTerm") String searchTerm) {
         return carService.performAdvancedSearch(searchTerm);
     }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ApiResponse<Car>> getCarByPlateId(@PathVariable Integer id) {
+//        Car car = carService.getCarByPlateId(id);
+//        if (car != null) {
+//            return ResponseEntity.ok(new ApiResponse<>(car, "Car retrieved successfully", true));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(new ApiResponse<>(null, "Car not found", false));
+//        }
+//    }
+
 }
