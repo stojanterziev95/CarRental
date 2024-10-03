@@ -32,6 +32,10 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
 
+    public Customer() {
+
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
