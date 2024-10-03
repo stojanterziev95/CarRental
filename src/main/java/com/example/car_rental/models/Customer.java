@@ -20,6 +20,15 @@ public class Customer {
     private String phoneNumber;
     private String driverLicenseNumber;
 
+    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, String driverLicenseNumber) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.driverLicenseNumber = driverLicenseNumber;
+    }
+
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
 
