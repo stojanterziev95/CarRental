@@ -55,8 +55,7 @@ public class AdminController {
         Admin admin = adminService.getAdminByUsername(loginDetails.getUsername());
 
         if (admin != null && passwordEncoder.matches(loginDetails.getPassword(), admin.getPassword())) {
-            String token = jwtUtil.createToken(admin.getUsername());
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok("Login successful");
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
