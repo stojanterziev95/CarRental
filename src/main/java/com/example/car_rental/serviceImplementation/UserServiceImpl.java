@@ -5,46 +5,77 @@ import com.example.car_rental.exceptions.UserNotFound;
 import com.example.car_rental.payload.AuthenticationRequest;
 import com.example.car_rental.models.User;
 import com.example.car_rental.repository.UserRepository;
+import com.example.car_rental.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Optional;
 
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        // You might want to add password encoding here
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+
+
+    @Override
     public boolean validateUser(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                return true;
-            } else {
-                throw new InvalidCredentialsException("Invalid username or password");
-            }
+        Optional<User> user = userRepository.findByUsername(username);
+
+        // Check if user exists and the password matches
+        if (user.isPresent()) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            return passwordEncoder.matches(password, user.get().getPassword());
+        } else {
+            return false;
         }
-        throw new UserNotFound("User not found with username: " + username);
     }
 
+    @Override
     public boolean registerUser(AuthenticationRequest request) {
+        // Check if username already exists
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new InvalidCredentialsException("Username already exists");
+            return false; // Username is already taken
         }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(user);
-        return true;
+        // Create new User instance
+        User newUser = new User();
+        newUser.setUsername(request.getUsername());
+
+        // Encrypt the password before saving
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        // Save the user to the database
+        userRepository.save(newUser);
+
+        return true; // Registration successful
     }
+
+
 }

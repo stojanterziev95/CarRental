@@ -3,6 +3,7 @@ package com.example.car_rental.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,7 +14,11 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String SECRET_KEY = "my_secret_key";
+    @Value("${jwt.signing.key.secret}")
+    private String SECRET_KEY;
+
+    @Value("${jwt.token.expiration.in.seconds}")
+    private long TOKEN_EXPIRATION;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,7 +51,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000))  // Expiration in seconds
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
