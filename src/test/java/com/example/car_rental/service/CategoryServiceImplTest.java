@@ -1,6 +1,6 @@
 package com.example.car_rental.service;
 
-import com.example.car_rental.models.CarCategory;
+import com.example.car_rental.enums.CarCategory;
 import com.example.car_rental.models.Category;
 import com.example.car_rental.repository.CategoryRepository;
 import com.example.car_rental.serviceImplementation.CategoryServiceImpl;

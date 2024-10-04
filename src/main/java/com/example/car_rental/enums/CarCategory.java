@@ -1,4 +1,4 @@
-package com.example.car_rental.models;
+package com.example.car_rental.enums;
 
 public enum CarCategory {
     SEDAN,

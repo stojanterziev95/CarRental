@@ -2,7 +2,7 @@ package com.example.car_rental.serviceImplementation;
 
 import com.example.car_rental.exceptions.InvalidCredentialsException;
 import com.example.car_rental.exceptions.UserNotFound;
-import com.example.car_rental.models.AuthenticationRequest;
+import com.example.car_rental.payload.AuthenticationRequest;
 import com.example.car_rental.models.User;
 import com.example.car_rental.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

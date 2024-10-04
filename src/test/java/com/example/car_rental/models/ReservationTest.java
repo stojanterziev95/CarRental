@@ -1,5 +1,6 @@
 package com.example.car_rental.models;
 
+import com.example.car_rental.enums.ReservationStatus;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
 package com.example.car_rental.controllers;
 
-import com.example.car_rental.models.AuthenticationRequest;
-import com.example.car_rental.models.AuthenticationResponse;
+import com.example.car_rental.payload.AuthenticationRequest;
+import com.example.car_rental.payload.AuthenticationResponse;
 import com.example.car_rental.security.JwtUtil;
 import com.example.car_rental.serviceImplementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

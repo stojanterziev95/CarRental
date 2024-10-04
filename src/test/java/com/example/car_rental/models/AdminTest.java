@@ -1,5 +1,6 @@
 package com.example.car_rental.models;
 
+import com.example.car_rental.enums.Role;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,16 +1,11 @@
 package com.example.car_rental.controllers;
 
-import com.example.car_rental.models.AuthenticationRequest;
-import com.example.car_rental.models.AuthenticationResponse;
+import com.example.car_rental.payload.AuthenticationRequest;
+import com.example.car_rental.payload.AuthenticationResponse;
 import com.example.car_rental.security.JwtUtil;
 import com.example.car_rental.serviceImplementation.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

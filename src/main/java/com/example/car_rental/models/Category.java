@@ -1,5 +1,6 @@
 package com.example.car_rental.models;
 
+import com.example.car_rental.enums.CarCategory;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 
