@@ -28,6 +28,23 @@ public class Car {
     @OneToMany(mappedBy = "car")
     private List<Reservation> reservations;
 
+    // Default constructor
+    public Car() {
+    }
+
+    // Parameterized constructor
+    public Car(Long id, String model, String brand, int year, String licensePlate, BigDecimal rentalPricePerDay, CarStatus status, Category category, List<Reservation> reservations) {
+        this.id = id;
+        this.model = model;
+        this.brand = brand;
+        this.year = year;
+        this.licensePlate = licensePlate;
+        this.rentalPricePerDay = rentalPricePerDay;
+        this.status = status;
+        this.category = category;
+        this.reservations = reservations;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
