@@ -1,12 +1,6 @@
 # Car Rental Project
 Built with Java 17 and Spring Boot 2.7.2
 
-## Prerequisites
-- Java 17
-- Maven 3.8.5
-- MySQL 8.0.29
-- IntelliJ IDEA 2022.2.1 (Community Edition)
-
 ## Installation
 - Clone the repository
 - Import the project into IntelliJ IDEA
@@ -23,3 +17,9 @@ Built with Java 17 and Spring Boot 2.7.2
 - `/api/v1/rentals/return`
 - `/api/v1/rentals/return/all`
 
+
+## Prerequisites
+- Java 17
+- Maven 3.8.5
+- MySQL 8.0.29
+- IntelliJ IDEA 2022.2.1 (Community Edition)
