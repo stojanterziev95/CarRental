@@ -2,6 +2,16 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.6'
+    id "org.sonarqube" version "5.1.0.4882"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "Car-Rental-Project"
+        property "sonar.projectName", "Car-Rental-Project"
+        property "sonar.host.url", "http://13.60.229.1:9000/"
+        property "sonar.login", "sqa_61effa496044dc5d2433eab7cb1edfacc88e2be3" // SonarQube token
+    }
 }
 
 group = 'com.example'
