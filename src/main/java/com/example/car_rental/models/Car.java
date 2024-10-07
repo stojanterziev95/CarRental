@@ -2,6 +2,10 @@ package com.example.car_rental.models;
 
 import com.example.car_rental.enums.CarStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
@@ -13,17 +17,33 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Model cannot be empty")
+    @Size(min = 1, max = 50, message = "Model must be between 1 and 50 characters")
     private String model;
+
+    @NotEmpty(message = "Brand cannot be empty")
+    @Size(min = 1, max = 50, message = "Brand must be between 1 and 50 characters")
     private String brand;
+
+    @NotNull(message = "Year cannot be null")
+    @DecimalMin(value = "1886", message = "Year must be greater than or equal to 1886") // First car was invented in 1886
     private int year;
+
+    @NotEmpty(message = "License plate cannot be empty")
+    @Size(min = 1, max = 15, message = "License plate must be between 1 and 15 characters")
     private String licensePlate;
+
+    @NotNull(message = "Rental price per day cannot be null")
+    @DecimalMin(value = "0.0", message = "Rental price per day must be greater than or equal to 0")
     private BigDecimal rentalPricePerDay;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Status cannot be null")
     private CarStatus status;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @NotNull(message = "Category cannot be null")
     private Category category;
 
     @OneToMany(mappedBy = "car")

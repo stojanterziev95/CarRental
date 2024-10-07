@@ -1,7 +1,10 @@
 package com.example.car_rental.models;
 
 import com.example.car_rental.enums.CarCategory;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
@@ -12,9 +15,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Category name cannot be null")
     @Enumerated(EnumType.STRING)
     private CarCategory categoryName;
 
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
     @OneToMany(mappedBy = "category")
