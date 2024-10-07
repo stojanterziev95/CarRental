@@ -7,15 +7,7 @@ Built with Java 17 and Spring Boot 2.7.2
 - Run the application
 
 ## Database
-- Create a database named `car_rental`
-- Import the `car_rental.sql` file into the database
-
-## Endpoints
-- `/api/v1/cars`
-- `/api/v1/customers`
-- `/api/v1/rentals`
-- `/api/v1/rentals/return`
-- `/api/v1/rentals/return/all`
+- Create a database named `car_rental_project`
 
 
 ## Prerequisites
